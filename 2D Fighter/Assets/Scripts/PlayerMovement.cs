@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour {
         else if (input < 0 && facingRight)
             Flip();
 
-        animator.SetFloat("Speed", Mathf.Abs(input)); // Sets parameter to positive input to play run animation
+        animator.SetFloat("Speed", Mathf.Abs(input));
 
         // Add velocity in y-axis
         if (rb.velocity.y == 0) {
@@ -71,7 +71,8 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(Vector2.down * gravity * fallSpeed, ForceMode2D.Impulse);
             if (!isGrounded) {
-                animator.SetBool("isFalling", true);
+                animator.SetBool("isJumping", false);
+               animator.SetBool("isFalling", true);
             }
         }
     }
