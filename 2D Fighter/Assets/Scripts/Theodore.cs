@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+public class Theodore : MonoBehaviour {
 
     private Rigidbody2D rb;
     public LayerMask ground;
     private Animator animator;
     public BoxCollider2D boxCollider;
+    public Transform attackRadius;
 
     public int health;
     public bool facingRight = true;
@@ -22,6 +23,10 @@ public class PlayerMovement : MonoBehaviour {
     public float distanceToGround;
     public int maxJumps = 2;
     private int currentJump;
+    private float attack1Rate = 1.5f;
+    private float attack2Rate = 1f;
+    private float attack3Rate = 2f;
+    private float nextAttackTime1, nextAttackTime2, nextAttackTime3 = 0.0f;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -55,12 +60,41 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isGrounded = false;
-            animator.SetBool("isJumping", true);
+            if (currentJump == 0) {
+                animator.SetBool("isJumping", true);
+            }
+            else {
+                animator.SetTrigger("doubleJumped");
+            }
         }
 
         // Attack 1
         if (Input.GetMouseButtonDown(0)) {
-            
+            if (Time.time >= nextAttackTime1) {
+                animator.SetTrigger("attack1");
+                // Code attack here
+                nextAttackTime1 = Time.time + 1f / attack1Rate;
+
+               // Collider2D[] enemysHit = Physics2D.OverlapCircleAll(attack)
+            }
+        }
+
+        // Attack 2
+        if (Input.GetMouseButtonDown(1)) {
+            if (Time.time >= nextAttackTime2) {
+                animator.SetTrigger("attack2");
+                // Code attack here
+                nextAttackTime2 = Time.time + 1f / attack2Rate;
+            }
+        }
+
+        // Attack 3
+        if (Input.GetMouseButtonDown(2)) {
+            if (Time.time >= nextAttackTime3) {
+                // Code attack here
+                animator.SetTrigger("attack3");
+                nextAttackTime3 = Time.time + 1f / attack3Rate;
+            }
         }
     }
 
@@ -71,7 +105,7 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(Vector2.down * gravity * fallSpeed, ForceMode2D.Impulse);
             if (!isGrounded) {
-                animator.SetBool("isJumping", false);
+               animator.SetBool("isJumping", false);
                animator.SetBool("isFalling", true);
             }
         }
