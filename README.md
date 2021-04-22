@@ -1,2 +1,2 @@
 # 2D-Fighter
-For unity
+2D Platform Fighter Game
