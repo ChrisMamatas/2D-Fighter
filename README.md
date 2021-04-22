@@ -1,2 +1,2 @@
 # 2D-Fighter
-2D Platform Fighter Game
+In Progress: 2D Fighter game being developed in Unity.
